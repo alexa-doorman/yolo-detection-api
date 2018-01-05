@@ -30,7 +30,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # max 5 MB
 app.config['REDIS_URL'] = 'redis://localhost:6379/0'
 REDIS_STORE = FlaskRedis.from_custom_provider(DecodedRedis, app)
 REDIS_STORE.init_app(app)
-THROTTLE = 5
+THROTTLE = int(os.environ.get('THROTTLE_SECONDS', 5))
 
 ALLOWED_EXTENSIONS = ['jpeg', 'jpg']
 

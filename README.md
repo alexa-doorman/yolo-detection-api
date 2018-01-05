@@ -27,3 +27,4 @@ Runs a Flask API using YOLO to detect objects in a frame. Use Docker to deploy w
 1. Python 3.6
 1. Tensorflow
 1. Redis
+1. Flask

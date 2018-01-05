@@ -4,8 +4,9 @@
 Runs a Flask API using YOLO to detect objects in a frame. Use Docker to deploy where possible.
 
 ## Quick Start with Docker
+1. Download the model folder from [here](https://drive.google.com/open?id=1NYtW4w2EjasFzvNQt_J6jduWeNWUIxyQ) and put it the current directory (where this file lives).
 1. `sudo docker-compose up --build -d` or for GPU `sudo docker-compose -f gpu-compose.yml up --build -d`
-2. Navigate to http://localhost:5001
+1. Navigate to http://localhost:5001
 
 ## Installation
 1. Download the model folder from [here](https://drive.google.com/open?id=1NYtW4w2EjasFzvNQt_J6jduWeNWUIxyQ) and put it the current directory (where this file lives).

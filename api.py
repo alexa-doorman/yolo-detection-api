@@ -83,7 +83,6 @@ def before_request():
         REDIS_STORE.set(ip, json.dumps(make_ip_config()), ex=DEFAULT_EXPIRE_SECONDS)
     else:
         user_metadata = json.loads(user_metadata)
-        print(user_metadata)
         if user_metadata['version'] != USER_METADATA_VERSION:
             user_metadata = make_ip_config()
 

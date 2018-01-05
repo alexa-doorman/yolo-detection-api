@@ -2,9 +2,10 @@
 # Created by https://www.gitignore.io/api/linux,macos,python,windows
 
 ### etc ###
-darkflow/*
+darkflow
 __pycache__/*
 model/*
+*.rdb
 
 ### Linux ###
 *~

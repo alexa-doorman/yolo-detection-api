@@ -3,6 +3,7 @@ import json
 import base64
 import logging
 from datetime import datetime
+import os
 
 from flask import Flask, jsonify, request, make_response
 from flask_redis import FlaskRedis
@@ -29,6 +30,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # max 5 MB
 app.config['REDIS_URL'] = 'redis://localhost:6379/0'
 REDIS_STORE = FlaskRedis.from_custom_provider(DecodedRedis, app)
 REDIS_STORE.init_app(app)
+THROTTLE = 5
 
 ALLOWED_EXTENSIONS = ['jpeg', 'jpg']
 
@@ -91,7 +93,7 @@ def before_request():
 
         user_metadata['requests'] += 1
 
-        if elapsed.total_seconds() > 20:
+        if app.debug or elapsed.total_seconds() > THROTTLE:
             user_metadata['counter'] += 1
             user_metadata['now'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        
             REDIS_STORE.set(ip, json.dumps(user_metadata), ex=DEFAULT_EXPIRE_SECONDS)
@@ -125,10 +127,10 @@ def index():
             return jsonify({'status': 'success', 'results': results})
 
         if 'image' not in request.files:
-            return make_401('image missing in request.files')
+            return make_400('image missing in request.files')
         image = request.files['image']
         if image.filename == '':
-            return make_401('image missing')
+            return make_400('image missing')
 
         if image and allowed_file(image.filename):
             img_data = cv2.imdecode(np.fromstring(image.read(), np.uint8),
@@ -141,8 +143,8 @@ def index():
                             result[k] = np.asscalar(v)
             return jsonify({'status': 'success', 'results': results})
 
-        return make_401('image missing')
+        return make_400('image missing')
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=5001)
+    app.run(debug=os.environ.get('DEBUG') == 'True', host='0.0.0.0', port=5001)

@@ -1,0 +1,22 @@
+version: '2.1'
+
+services:
+  yolo-service:
+    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.rpi
+    ports:
+      - 5001:5001
+    volumes:
+      - .:/src/app
+    links:
+      - redis
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - THROTTLE_SECONDS=1
+
+  redis:
+    image: redis

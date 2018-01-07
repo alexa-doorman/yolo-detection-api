@@ -12,7 +12,6 @@ Jinja2==2.10
 Markdown==2.6.11
 MarkupSafe==1.0
 numpy==1.13.3
-opencv-python==3.4.0.12
 protobuf==3.5.1
 redis==2.10.6
 six==1.11.0

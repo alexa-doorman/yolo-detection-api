@@ -6,7 +6,7 @@ darkflow
 __pycache__/*
 model/*
 *.rdb
-.vscode
+.vscode/*
 
 ### Linux ###
 *~

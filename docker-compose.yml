@@ -3,6 +3,7 @@ version: '2.1'
 services:
   yolo-service:
     build: .
+    image: doorman/yoloapi:64
     ports:
       - 5001:5001
     volumes:

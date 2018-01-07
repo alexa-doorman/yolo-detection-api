@@ -15,7 +15,18 @@ import numpy as np
 
 import load_model
 
-logger = logging.getLogger(__name__)
+log_formatter = logging.Formatter("%(asctime)s [ %(threadName)-12.12s ] [ %(levelname)-5.5s ]  %(message)s")
+rootLogger = logging.getLogger()
+
+file_handler = logging.FileHandler("info.log")
+file_handler.setFormatter(log_formatter)
+rootLogger.addHandler(file_handler)
+
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(log_formatter)
+rootLogger.addHandler(console_handler)
+
+rootLogger.setLevel(logging.INFO)
 
 
 class DecodedRedis(StrictRedis):

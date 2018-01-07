@@ -5,7 +5,8 @@ services:
     build: .
     build:
       context: .
-      dockerfile: Dockerfile.rpi
+      dockerfile: Dockerfile.gpu
+    image: doorman/yoloapi:64-gpu
     ports:
       - 5001:5001
     volumes:

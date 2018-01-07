@@ -16,6 +16,5 @@ opencv-python==3.4.0.12
 protobuf==3.5.1
 redis==2.10.6
 six==1.11.0
-tensorflow==1.4.1
 tensorflow-tensorboard==0.4.0rc3
 Werkzeug==0.14.1

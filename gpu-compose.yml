@@ -16,7 +16,7 @@ services:
       - redis
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - THROTTLE_SECONDS=5
+      - THROTTLE_SECONDS=1
 
   redis:
     image: redis

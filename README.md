@@ -7,7 +7,8 @@ Runs a Flask API using YOLO to detect objects in a frame. Use Docker to deploy w
 
 ### Using Docker Image
 0. Images - https://hub.docker.com/r/doorman/yoloapi/
-1. **TODO**
+1. 
+1. `sudo docker run --volume "/home/pi/projects/yolo-detection-api:/src/app" doorman/yoloapi:arm`
 
 ### Building it on your own
 1. Download the model folder from [here](https://drive.google.com/open?id=1NYtW4w2EjasFzvNQt_J6jduWeNWUIxyQ) and put it the current directory (where this file lives).

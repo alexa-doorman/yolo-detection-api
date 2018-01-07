@@ -1,12 +1,12 @@
-version: '3.4'
+version: '2.1'
 
 services:
   yolo-service:
     build: .
     build:
       context: .
-      dockerfile: Dockerfile.arm
-    image: doorman/yoloapi:arm
+      dockerfile: Dockerfile.32v7
+    image: doorman/yoloapi:32v7
     ports:
       - 5001:5001
     volumes:

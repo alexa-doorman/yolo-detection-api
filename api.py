@@ -16,17 +16,17 @@ import numpy as np
 import load_model
 
 log_formatter = logging.Formatter("%(asctime)s [ %(threadName)-12.12s ] [ %(levelname)-5.5s ]  %(message)s")
-rootLogger = logging.getLogger()
+logger = logging.getLogger()
 
 file_handler = logging.FileHandler("info.log")
 file_handler.setFormatter(log_formatter)
-rootLogger.addHandler(file_handler)
+logger.addHandler(file_handler)
 
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
-rootLogger.addHandler(console_handler)
+logger.addHandler(console_handler)
 
-rootLogger.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)
 
 
 class DecodedRedis(StrictRedis):
@@ -113,8 +113,12 @@ def before_request():
             return make_429("Please wait before requesting again")
 
 
-@app.route('/detect', methods=['GET', 'POST'])
+@app.route('/')
 def index():
+    return jsonify({'message': 'the model was loaded successfully :D'})
+
+@app.route('/detect', methods=['GET', 'POST'])
+def detect():
     if request.method == 'GET':
         return make_404('GET not permitted')
     else:

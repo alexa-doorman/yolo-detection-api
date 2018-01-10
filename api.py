@@ -7,6 +7,7 @@ import os
 
 from flask import Flask, jsonify, request, make_response
 from flask_redis import FlaskRedis
+from flask_httpauth import HTTPBasicAuth
 from redis import StrictRedis
 
 from werkzeug.utils import secure_filename
@@ -15,7 +16,8 @@ import numpy as np
 
 import load_model
 
-log_formatter = logging.Formatter("%(asctime)s [ %(threadName)-12.12s ] [ %(levelname)-5.5s ]  %(message)s")
+log_formatter = logging.Formatter(
+    "%(asctime)s [ %(threadName)-12.12s ] [ %(levelname)-5.5s ]  %(message)s")
 logger = logging.getLogger()
 
 file_handler = logging.FileHandler("info.log")
@@ -29,6 +31,21 @@ logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
 
 
+auth = HTTPBasicAuth()
+
+
+USER_DATA = {
+    os.environ['DETECT_API_USERNAME']: os.environ['DETECT_API_PASSWORD']
+}
+
+
+@auth.verify_password
+def verify(username, password):
+    if not (username and password):
+        return False
+    return USER_DATA.get(username) == password
+
+
 class DecodedRedis(StrictRedis):
     @classmethod
     def from_url(cls, url, db=None, **kwargs):
@@ -37,8 +54,10 @@ class DecodedRedis(StrictRedis):
 
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = os.environ.get('MAX_CONTENT_LENGTH', 5 * 1024 * 1024)  # max 5 MB
-app.config['REDIS_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+app.config['MAX_CONTENT_LENGTH'] = os.environ.get(
+    'MAX_CONTENT_LENGTH', 5 * 1024 * 1024)  # max 5 MB
+app.config['REDIS_URL'] = os.environ.get(
+    'REDIS_URL', 'redis://localhost:6379/0')
 REDIS_STORE = FlaskRedis.from_custom_provider(DecodedRedis, app)
 REDIS_STORE.init_app(app)
 THROTTLE = int(os.environ.get('THROTTLE_SECONDS', 5))
@@ -93,7 +112,8 @@ def before_request():
 
     user_metadata = REDIS_STORE.get(ip)
     if user_metadata is None:
-        REDIS_STORE.set(ip, json.dumps(make_ip_config()), ex=DEFAULT_EXPIRE_SECONDS)
+        REDIS_STORE.set(ip, json.dumps(make_ip_config()),
+                        ex=DEFAULT_EXPIRE_SECONDS)
     else:
         user_metadata = json.loads(user_metadata)
         if user_metadata['version'] != USER_METADATA_VERSION:
@@ -106,18 +126,23 @@ def before_request():
 
         if app.debug or elapsed.total_seconds() > THROTTLE:
             user_metadata['counter'] += 1
-            user_metadata['now'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        
-            REDIS_STORE.set(ip, json.dumps(user_metadata), ex=DEFAULT_EXPIRE_SECONDS)
+            user_metadata['now'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            REDIS_STORE.set(ip, json.dumps(user_metadata),
+                            ex=DEFAULT_EXPIRE_SECONDS)
         else:
-            REDIS_STORE.set(ip, json.dumps(user_metadata), ex=DEFAULT_EXPIRE_SECONDS)            
+            REDIS_STORE.set(ip, json.dumps(user_metadata),
+                            ex=DEFAULT_EXPIRE_SECONDS)
             return make_429("Please wait before requesting again")
 
 
 @app.route('/')
+@auth.login_required
 def index():
     return jsonify({'message': 'the model was loaded successfully :D'})
 
+
 @app.route('/detect', methods=['GET', 'POST'])
+@auth.login_required
 def detect():
     if request.method == 'GET':
         return make_404('GET not permitted')

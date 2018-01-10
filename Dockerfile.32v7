@@ -32,9 +32,8 @@ RUN cd ${OPENCV_DIR} && \
     mv /usr/local/lib/python3.4/dist-packages/cv2.cpython-34m.so /usr/local/lib/python3.4/dist-packages/cv2.so && \
     rm -rf ${OPENCV_DIR}
 
-RUN pip3 install cython \
-    && pip3 install flask \
-    && pip3 install flask-redis
+COPY requirements.txt /src/requirements/requirements.txt
+RUN pip3 install -r /src/requirements/requirements.txt
 
 RUN git clone https://github.com/thtrieu/darkflow.git \
     && cd darkflow \

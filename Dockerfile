@@ -62,9 +62,8 @@ RUN wget https://github.com/opencv/opencv/archive/3.3.0.zip \
 	&& rm /3.3.0.zip \
 	&& rm -r /opencv-3.3.0
 
-RUN pip3 install cython \
-    && pip3 install flask \
-    && pip3 install flask-redis
+COPY requirements.txt /src/requirements/requirements.txt
+RUN pip3 install -r /src/requirements/requirements.txt
 
 RUN git clone https://github.com/thtrieu/darkflow.git \
     && cd darkflow \

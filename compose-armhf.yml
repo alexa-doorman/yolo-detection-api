@@ -5,7 +5,7 @@ services:
     build: .
     build:
       context: .
-      dockerfile: Dockerfile.arm
+      dockerfile: Dockerfile.armhf
     image: doorman/yoloapi:armhf
     ports:
       - 5001:5001

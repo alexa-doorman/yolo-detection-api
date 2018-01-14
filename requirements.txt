@@ -12,6 +12,7 @@ Markdown==2.6.11
 MarkupSafe==1.0
 numpy==1.13.3
 protobuf==3.5.1
+python-dotenv==0.7.1
 redis==2.10.6
 six==1.11.0
 tensorflow-tensorboard==0.4.0rc3

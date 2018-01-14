@@ -23,7 +23,7 @@ You need to set `DETECT_API_USERNAME` and `DETECT_API_PASSWORD` that matches you
 ### Using Docker Image
 1. Images - https://hub.docker.com/r/doorman/yoloapi/
 1. `sudo docker run --name redis-yolo -d redis` 
-1. `sudo docker run -e THROTTLE_SECONDS=1 --link redis-yolo:redis -e REDIS_URL=redis://redis:6379/0 --volume "/home/pi/projects/yolo-detection-api:/src/app" -p 5001:5001 doorman/yoloapi:rpi` (replace `rpi` with the version you need from the available Docker images)
+1. `sudo docker run --link redis-yolo:redis -e REDIS_URL=redis://redis:6379/0 --volume "/home/pi/doorman/yolo-detection-api:/src/app" -p 5001:5001 doorman/yoloapi:rpi` (replace `rpi` with the version you need from the available Docker images)
 
 ### Building it on your own
 1. Download the model folder from [here](https://drive.google.com/open?id=1NYtW4w2EjasFzvNQt_J6jduWeNWUIxyQ) and put it the current directory (where this file lives).

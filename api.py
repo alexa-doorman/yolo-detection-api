@@ -14,6 +14,13 @@ from werkzeug.utils import secure_filename
 import cv2
 import numpy as np
 
+
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 import load_model
 
 log_formatter = logging.Formatter(

@@ -16,6 +16,8 @@ USER_DATA = {
 
 You need to set `DETECT_API_USERNAME` and `DETECT_API_PASSWORD` that matches your streaming client. You can add as many "users" as you would like.
 
+**Additionally**, rename `example.env` to `.env` after filling out the contents. 
+
 
 
 ## Quick Start with Docker
